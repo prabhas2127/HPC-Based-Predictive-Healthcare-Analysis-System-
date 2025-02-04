@@ -23,3 +23,16 @@ The HPC-Based Predictive Healthcare Analysis System is a project aimed at develo
 - **Noise Addition:** Expand the dataset with added noise to improve model robustness.
 
 - **Performance Comparison:** Evaluate the performance of sequential vs. parallel execution.
+
+
+## Acknowledgments
+
+
+- **OpenMPI**: For providing a robust implementation of the Message Passing Interface (MPI) that enabled efficient parallel processing in our project.
+- **Scikit-learn**: For the powerful machine learning library that facilitated the implementation of the Random Forest model.
+- **Pandas**: For the invaluable data manipulation capabilities that were essential for data preprocessing.
+- **NumPy**: For providing support for numerical computations, which were crucial for our analysis.
+- **Matplotlib** and **Seaborn**: For their excellent data visualization libraries that helped in presenting our results effectively.
+- **Jupyter Notebook**: For providing an interactive environment that made it easier to develop and document our code.
+
+We also want to thank our peers and mentors for their feedback and support throughout the development of this project. Special thanks to Mr. Nileshchandra Pikle sir and Mrs. Srujna B. mam for their guidance and encouragement.
