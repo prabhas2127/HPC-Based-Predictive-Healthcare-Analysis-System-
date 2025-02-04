@@ -25,6 +25,16 @@ The HPC-Based Predictive Healthcare Analysis System is a project aimed at develo
 - **Performance Comparison:** Evaluate the performance of sequential vs. parallel execution.
 
 
+## License
+
+
+This project is licensed under the Apache License 2.0. You may obtain a copy of the License at:
+
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+
+
 ## Acknowledgments
 
 
