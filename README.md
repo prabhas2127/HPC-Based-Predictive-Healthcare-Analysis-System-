@@ -12,3 +12,14 @@ The HPC-Based Predictive Healthcare Analysis System is a project aimed at develo
 - Implement a Random Forest model for disease prediction.
 
 - Compare sequential vs. parallel execution (using MPI) to optimize performance.
+
+
+## Features
+
+- **Data Preprocessing:** Clean and preprocess medical records for analysis.
+
+- **Model Training:** Train a Random Forest model on the dataset.
+
+- **Performance Comparison:** Evaluate the performance of sequential vs. parallel execution.
+
+- **Noise Addition:** Expand the dataset with added noise to improve model robustness.
