@@ -2,7 +2,7 @@ from mpi4py import MPI
 import pandas as pd
 import numpy as np
 import time
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import LabelEncoder
@@ -16,14 +16,22 @@ size = comm.Get_size()
 start_total_time = time.time()
 
 # Load the dataset (only in rank 0)
-data_path = r'C:\Users\user\Desktop\ML_module\project\kagg\Training.csv'
+data_path = '/home/dhpcap/ML_module/project/kagg/Training.csv'
 if rank == 0:
-    training = pd.read_csv(data_path)
+    print("Rank 0: Loading data...")
+    try:
+        training = pd.read_csv(data_path)
+        print("Rank 0: Data loaded successfully.")
+    except Exception as e:
+        print(f"Rank 0: Error loading data: {e}")
+        training = None
 else:
     training = None
 
 # Broadcast dataset to all processes
+print(f"Rank {rank}: Broadcasting training data...")
 training = comm.bcast(training, root=0)
+print(f"Rank {rank}: Data broadcasted.")
 
 # Function to augment the data
 def augment_data(df, num_copies):
@@ -44,22 +52,30 @@ num_copies = target_size // (original_size * size)  # Split across MPI processes
 
 # Each process augments its portion
 df_split = np.array_split(training, size)[rank]
+print(f"Rank {rank}: Augmenting data...")
 augmented_data = augment_data(df_split, num_copies)
+print(f"Rank {rank}: Data augmented.")
 
 # Gather augmented data at rank 0
+print(f"Rank {rank}: Gathering augmented data...")
 augmented_data_all = comm.gather(augmented_data, root=0)
 
 if rank == 0:
+    print("Rank 0: Concatenating augmented data...")
     expanded_df = pd.concat(augmented_data_all, ignore_index=True)
-    expanded_df.to_csv(r'C:\Users\user\Desktop\ML_module\project\kagg\Expanded_par_Training.csv', index=False)
+    expanded_df.to_csv('/home/dhpcap/ML_module/project/kagg/Expanded_par_Training.csv', index=False)
+    print("Rank 0: Augmented data saved to CSV.")
 else:
     expanded_df = None
 
 # Broadcast expanded dataset
+print(f"Rank {rank}: Broadcasting expanded dataset...")
 temp_data = comm.bcast(expanded_df, root=0)
+print(f"Rank {rank}: Expanded dataset broadcasted.")
 
 # Label encoding - Fit LabelEncoder in rank 0 and broadcast it
 if rank == 0:
+    print("Rank 0: Fitting LabelEncoder...")
     label_encoder = LabelEncoder()
     label_encoder.fit(temp_data['prognosis'])  # Fit only once on the entire 'prognosis' column
 else:
@@ -75,14 +91,34 @@ X = temp_data.drop(['prognosis'], axis=1)
 # Split dataset (same for all processes)
 X_train, X_test, y_train, y_test = train_test_split(X, y_encoded, test_size=0.2, random_state=42)
 
-# Train Random Forest Classifier
-start_train_time = time.time()
+# Hyperparameter tuning using GridSearchCV
+param_grid = {
+    'n_estimators': [100, 200],
+    'max_depth': [None, 10, 20],
+    'min_samples_split': [2, 5],
+    'class_weight': ['balanced', None]  # Use balanced class weights
+}
+
+# Initialize the Random Forest Classifier
 rf = RandomForestClassifier(random_state=42)
-rf.fit(X_train, y_train)
+
+# Use GridSearchCV for hyperparameter tuning
+print(f"Rank {rank}: Starting GridSearchCV...")
+grid_search = GridSearchCV(estimator=rf, param_grid=param_grid, cv=5, scoring='accuracy')
+grid_search.fit(X_train, y_train)
+
+# Get the best estimator
+best_rf = grid_search.best_estimator_
+
+# Train the best model
+start_train_time = time.time()
+print(f"Rank {rank}: Training the best model...")
+best_rf.fit(X_train, y_train)
 train_time = time.time() - start_train_time
+print(f"Rank {rank}: Model trained.")
 
 # Evaluate model
-y_pred = rf.predict(X_test)
+y_pred = best_rf.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 class_report = classification_report(y_test, y_pred)
 
@@ -96,7 +132,7 @@ df2 = pd.concat([df2, X_test.iloc[[7]]], axis=0, ignore_index=True)  # Use test 
 df2 = df2.fillna(0)  # Ensure no missing values in df2
 
 # Make prediction using the trained model
-m = rf.predict(df2)
+m = best_rf.predict(df2)
 
 # Inverse transform the predicted labels using the fitted label_encoder
 dis = label_encoder.inverse_transform(m)
