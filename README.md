@@ -23,6 +23,16 @@ The HPC-Based Predictive Healthcare Analysis System is a project aimed at develo
 - **Noise Addition:** Expand the dataset with added noise to improve model robustness.
 
 - **Performance Comparison:** Evaluate the performance of sequential vs. parallel execution.
+  
+
+## Performance Improvement
+
+- **Sequential Execution Time:** 2.4001 seconds  
+- **Parallel Execution Time:** 0.499 seconds  
+- **Speed-Up:** 79.2% faster  
+
+This demonstrates the performance acceleration achieved by parallelizing the code, reducing execution time by 79.2%.
+
 
 
 ## License
