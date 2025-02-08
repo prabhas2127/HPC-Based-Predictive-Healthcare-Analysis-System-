@@ -46,14 +46,11 @@ This demonstrates the performance acceleration achieved by parallelizing the cod
 
 ### Accuracy Formula  
 Accuracy is calculated using the following formula:
-
+- **Accuracy** = ( Number of Correct Predictions /  Total Number of Predictions ) * 100
 
 - **Accuracy Improvement:** 9.6% increase  
 
 The parallel code achieves a perfect accuracy of 1.000, which is a 9.6% improvement over the sequential code's accuracy of 0.9119.
-
-
-
 
 
 ## License
