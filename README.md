@@ -33,11 +33,25 @@ The HPC-Based Predictive Healthcare Analysis System is a project aimed at develo
 ### Speed-Up Formula  
 The speed-up is calculated using the following formula:
 
-**Speed-up Percentage** = ((serial_time_new - parallel_time_new) / serial_time_new) * 100
+- **Speed-up Percentage** = ((serial_time_new - parallel_time_new) / serial_time_new) * 100
 
 - **Speed-Up:** 79.2% faster  
 
 This demonstrates the performance acceleration achieved by parallelizing the code, reducing execution time by 79.2%.
+
+## Accuracy Comparison
+
+- **Sequential Code Accuracy:** 0.9119  
+- **Parallel Code Accuracy:** 1.000  
+
+### Accuracy Formula  
+Accuracy is calculated using the following formula:
+
+
+- **Accuracy Improvement:** 9.6% increase  
+
+The parallel code achieves a perfect accuracy of 1.000, which is a 9.6% improvement over the sequential code's accuracy of 0.9119.
+
 
 
 
