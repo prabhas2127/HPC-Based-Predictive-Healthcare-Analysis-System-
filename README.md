@@ -29,12 +29,14 @@ The HPC-Based Predictive Healthcare Analysis System is a project aimed at develo
 
 - **Sequential Execution Time:** 2.4001 seconds  
 - **Parallel Execution Time:** 0.499 seconds
+  
+### Speed-Up Formula
 
-- Speed-up Percentage=( 
-Serial Time
-Serial Time−Parallel Time
-​
- )×100
+The speed-up is calculated using the following formula:
+
+\[
+\text{Speed-up} = \frac{\text{Sequential Time} - \text{Parallel Time}}{\text{Sequential Time}} \times 100
+\]
 - **Speed-Up:** 79.2% faster  
 
 This demonstrates the performance acceleration achieved by parallelizing the code, reducing execution time by 79.2%.
