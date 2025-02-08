@@ -33,9 +33,7 @@ The HPC-Based Predictive Healthcare Analysis System is a project aimed at develo
 ### Speed-Up Formula  
 The speed-up is calculated using the following formula:
 
-\[
-\text{Speed-up} = \frac{\text{Sequential Time} - \text{Parallel Time}}{\text{Sequential Time}} \times 100
-\]
+speed_up_percentage_new = ((serial_time_new - parallel_time_new) / serial_time_new) * 100
 
 - **Speed-Up:** 79.2% faster  
 
